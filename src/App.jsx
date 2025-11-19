@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { User, BookOpen, Cpu, Code, Mail, Briefcase, GraduationCap, Moon, Sun, MapPin, FileText, Database } from 'lucide-react';
+import { User, BookOpen, Cpu, Code, Mail, GraduationCap, Moon, Sun, FileText, Database, Linkedin, ExternalLink } from 'lucide-react';
 
 // --- COMPONENTE DE FONDO INTERACTIVO (GRAFOS) ---
 const NetworkBackground = ({ darkMode }) => {
@@ -13,9 +13,9 @@ const NetworkBackground = ({ darkMode }) => {
     let particles = [];
     
     // Configuración
-    const particleCount = 60; // Cantidad de nodos
-    const connectionDistance = 140; // Distancia máxima para unir nodos
-    const mouseDistance = 180; // Radio de interacción del ratón
+    const particleCount = 60; 
+    const connectionDistance = 140;
+    const mouseDistance = 180; 
 
     // Estado del ratón
     const mouse = { x: null, y: null };
@@ -30,8 +30,8 @@ const NetworkBackground = ({ darkMode }) => {
       constructor() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.vx = (Math.random() - 0.5) * 0.5; // Velocidad X
-        this.vy = (Math.random() - 0.5) * 0.5; // Velocidad Y
+        this.vx = (Math.random() - 0.5) * 0.5; 
+        this.vy = (Math.random() - 0.5) * 0.5; 
         this.size = Math.random() * 2 + 1;
       }
 
@@ -39,7 +39,6 @@ const NetworkBackground = ({ darkMode }) => {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Rebotar en los bordes
         if (this.x < 0 || this.x > w) this.vx *= -1;
         if (this.y < 0 || this.y > h) this.vy *= -1;
       }
@@ -47,7 +46,7 @@ const NetworkBackground = ({ darkMode }) => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = darkMode ? 'rgba(148, 163, 184, 0.5)' : 'rgba(71, 85, 105, 0.5)'; // Slate-400 / Slate-600
+        ctx.fillStyle = darkMode ? 'rgba(148, 163, 184, 0.5)' : 'rgba(71, 85, 105, 0.5)'; 
         ctx.fill();
       }
     }
@@ -63,15 +62,12 @@ const NetworkBackground = ({ darkMode }) => {
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
       
-      // Actualizar y dibujar partículas
       particles.forEach(p => {
         p.update();
         p.draw();
       });
 
-      // Dibujar conexiones (Grafos)
       for (let i = 0; i < particles.length; i++) {
-        // Conexiones entre partículas
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
@@ -87,7 +83,6 @@ const NetworkBackground = ({ darkMode }) => {
           }
         }
 
-        // Conexión con el ratón (Interacción)
         if (mouse.x != null) {
             const dx = particles[i].x - mouse.x;
             const dy = particles[i].y - mouse.y;
@@ -95,7 +90,6 @@ const NetworkBackground = ({ darkMode }) => {
 
             if (distance < mouseDistance) {
                 ctx.beginPath();
-                // Color azulado para la interacción del ratón
                 ctx.strokeStyle = darkMode ? `rgba(56, 189, 248, ${1 - distance/mouseDistance})` : `rgba(37, 99, 235, ${1 - distance/mouseDistance})`; 
                 ctx.lineWidth = 1;
                 ctx.moveTo(particles[i].x, particles[i].y);
@@ -108,7 +102,6 @@ const NetworkBackground = ({ darkMode }) => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    // Event Listeners
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
@@ -147,6 +140,8 @@ const Portfolio = () => {
     about: "Nací en Torreblanca (Castellón) en 2006. Actualmente soy estudiante de segundo curso de Ingeniería Mecánica en la Universitat Politècnica de València (UPV). Me considero una persona curiosa, organizada y centrada en mis objetivos académicos y profesionales.",
     location: "Valencia / Torreblanca, España",
     email: "vicentbetoret06@gmail.com",
+    // URL CORRECTA DE LINKEDIN AÑADIDA:
+    linkedin: "https://www.linkedin.com/in/vicent-betoret-17aa89385/", 
     skills: [
       { name: "Diseño CAD", level: 80 },
       { name: "Ofimática", level: 90 },
@@ -167,7 +162,7 @@ const Portfolio = () => {
       {/* FONDO INTERACTIVO */}
       <NetworkBackground darkMode={darkMode} />
 
-      {/* Navigation Bar (z-50 para estar encima del canvas) */}
+      {/* Navigation Bar */}
       <nav className={`sticky top-0 z-50 backdrop-blur-md border-b ${darkMode ? 'bg-slate-900/80 border-slate-700' : 'bg-white/80 border-slate-200'}`}>
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="font-bold text-xl tracking-tighter flex items-center gap-2">
@@ -182,7 +177,7 @@ const Portfolio = () => {
         </div>
       </nav>
 
-      {/* Main Content (z-10 para estar encima del canvas) */}
+      {/* Main Content */}
       <div className="relative z-10">
           
         {/* Hero Section */}
@@ -199,13 +194,22 @@ const Portfolio = () => {
                 <p className={`text-lg max-w-lg ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                 {userData.tagline}
                 </p>
-                <div className="flex gap-4 pt-4">
-                <a 
-                    href={`mailto:${userData.email}`}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition flex items-center gap-2 shadow-lg hover:shadow-blue-500/25"
-                >
-                    <Mail size={18} /> Contactar
-                </a>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <a 
+                      href={`mailto:${userData.email}`}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition flex items-center gap-2 shadow-lg hover:shadow-blue-500/25"
+                  >
+                      <Mail size={18} /> Contactar
+                  </a>
+                  {/* Botón LinkedIn */}
+                  <a 
+                      href={userData.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`px-8 py-3 rounded-lg font-medium transition flex items-center gap-2 border ${darkMode ? 'border-slate-600 hover:bg-slate-800 hover:border-blue-400' : 'border-slate-300 hover:bg-slate-100 hover:border-blue-400'}`}
+                  >
+                      <Linkedin size={18} className="text-blue-500"/> LinkedIn
+                  </a>
                 </div>
             </div>
             
@@ -213,14 +217,13 @@ const Portfolio = () => {
             <div className="relative z-10 flex justify-center">
                 <div className={`w-64 h-64 md:w-80 md:h-80 rounded-full border-4 relative overflow-hidden shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-white bg-white'}`}>
                 
-                {/* FOTO */}
                 <img 
                     src="/foto.jpg" 
                     alt="Vicent Betoret" 
                     className="w-full h-full object-cover"
-                    onError={(e) => {e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'}} // Fallback si falla la imagen
+                    onError={(e) => {e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'}} 
                 />
-                {/* Fallback por si no carga la imagen */}
+                {/* Fallback */}
                 <div className="hidden absolute inset-0 flex-col items-center justify-center text-slate-500 bg-slate-200 dark:bg-slate-800">
                     <User size={64} className="mb-4 opacity-50" />
                     <span className="text-sm font-mono">Foto de Vicent</span>
@@ -270,7 +273,6 @@ const Portfolio = () => {
                 </h2>
                 <div className="relative border-l-2 border-slate-700 ml-3 space-y-10">
                 
-                {/* Universidad */}
                 <div className="relative pl-8">
                     <span className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></span>
                     <span className="text-sm text-blue-400 font-mono">2024 - Presente</span>
@@ -279,7 +281,6 @@ const Portfolio = () => {
                     <p className="mt-1 text-sm opacity-80">2º Curso.</p>
                 </div>
 
-                {/* Bachillerato */}
                 <div className="relative pl-8">
                     <span className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-slate-600"></span>
                     <span className="text-sm font-mono opacity-60">Anterior</span>
@@ -287,7 +288,6 @@ const Portfolio = () => {
                     <p className="text-slate-500">IES Maestrat (Sant Mateu)</p>
                 </div>
 
-                {/* Idiomas */}
                 <div className="relative pl-8">
                     <span className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-green-500"></span>
                     <h3 className="text-xl font-bold mt-1">Idiomas</h3>
@@ -351,9 +351,19 @@ const Portfolio = () => {
             {/* Footer */}
             <footer className={`py-12 mt-12 border-t text-center ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
                 <h3 className="text-xl font-bold tracking-tighter">VICENT <span className="text-blue-500">BETORET</span></h3>
-                <div className="flex justify-center gap-6 mt-4">
-                    <a href={`mailto:${userData.email}`} className="hover:text-blue-500 transition">Email</a>
-                    <a href="#" className="hover:text-blue-500 transition">LinkedIn</a>
+                <div className="flex justify-center gap-6 mt-4 items-center">
+                    <a href={`mailto:${userData.email}`} className="hover:text-blue-500 transition flex items-center gap-2">
+                        <Mail size={16} /> Email
+                    </a>
+                    <span className="opacity-20">|</span>
+                    <a 
+                        href={userData.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer" 
+                        className="hover:text-blue-500 transition flex items-center gap-2"
+                    >
+                        <Linkedin size={16} /> LinkedIn
+                    </a>
                 </div>
                 <p className="text-sm opacity-40 mt-6">© {new Date().getFullYear()} Vicent Betoret. Construido con React.</p>
             </footer>
